@@ -1,5 +1,7 @@
 package application;
 
+import core.rest.Implementation.SimpleRestClient;
+import core.rest.RestClient;
 import core.ui.UIController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -10,6 +12,8 @@ import org.slf4j.LoggerFactory;
 
 public class MainApplication extends Application {
     private static final Logger logger = LoggerFactory.getLogger(MainApplication.class);
+    private RestClient restClient = new SimpleRestClient();
+    private final String PATH_TO_PROJECT = "/Microsoft/TypeScript";
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -24,10 +28,13 @@ public class MainApplication extends Application {
         primaryStage.setScene(new Scene(fxmlLoader.load()));
         primaryStage.show();
         primaryStage.toFront();
+
+        //TODO remove
+        restClient.getAllOpenPullRequests(PATH_TO_PROJECT);
     }
 
     public static void main(String[] args) {
-        logger.debug("launching application");
+        logger.debug("launching app");
         Application.launch(MainApplication.class, args);
     }
 }
