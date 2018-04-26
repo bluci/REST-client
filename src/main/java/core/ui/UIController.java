@@ -3,7 +3,6 @@ package core.ui;
 import core.entities.PullRequest;
 import core.exception.RestException;
 import core.rest.RestClient;
-import javafx.beans.Observable;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -22,7 +21,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class UIController {
-    private final Stage primaryStage;
     private final Logger logger = LoggerFactory.getLogger(UIController.class);
     private final RestClient restClient;
     private ObservableList<PullRequest> pullRequestTableData;
@@ -39,9 +37,8 @@ public class UIController {
     public TextField filterStringInput;
 
 
-    public UIController(final RestClient restClient, final Stage primaryStage) {
+    public UIController(final RestClient restClient) {
         this.restClient = restClient;
-        this.primaryStage = primaryStage;
     }
 
     public void initialize() {
