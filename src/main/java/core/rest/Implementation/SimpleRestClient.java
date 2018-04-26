@@ -17,6 +17,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.net.HttpURLConnection.HTTP_OK;
+
 public class SimpleRestClient implements RestClient {
     private final Logger logger = LoggerFactory.getLogger(SimpleRestClient.class);
     private final Client restClient;
@@ -43,10 +45,10 @@ public class SimpleRestClient implements RestClient {
         List<PullRequest> result;
         Response serverResponse = restClient
                 .target(ResourceConstants.REST_URI)
-                .path(ResourceConstants.PATH_TO_PULLS).queryParam("per_page", 100).queryParam("page", pageNr)
+                .path(ResourceConstants.PATH_TO_PULLS).queryParam("per_page", 60).queryParam("page", pageNr)
                 .request(MediaType.APPLICATION_JSON)
                 .get();
-        if (serverResponse.getStatus() != 200) {
+        if (serverResponse.getStatus() != HTTP_OK) {
             throw new RestException("recieved error response: " + serverResponse.getEntity().toString());
         }
         result = getPullRequestListFromResponse(serverResponse);
