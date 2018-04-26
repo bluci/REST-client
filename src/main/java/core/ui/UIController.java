@@ -15,7 +15,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.nio.charset.IllegalCharsetNameException;
 import java.util.List;
 
 public class UIController {
@@ -38,6 +37,7 @@ public class UIController {
     }
 
     public void initialize() {
+        pullRequestNrCol.setCellValueFactory(new PropertyValueFactory<>("number"));
         pullRequestTitleCol.setCellValueFactory(new PropertyValueFactory<>("title"));
         pullRequestTableData = FXCollections.observableArrayList();
     }
@@ -58,9 +58,9 @@ public class UIController {
         }
     }
 
-    public void setPullRequestTableData(List<PullRequest> pullRequestList) {
+    private void setPullRequestTableData(List<PullRequest> pullRequestList) {
         pullRequestTableData.clear();
-        this.pullRequestTableData.addAll(pullRequestList);
+        pullRequestTableData.addAll(pullRequestList);
         pullRequestTableView.setItems(pullRequestTableData);
     }
 }

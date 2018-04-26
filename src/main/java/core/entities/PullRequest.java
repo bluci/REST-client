@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class PullRequest {
     private String title;
+    private int number;
 
     @JsonCreator
     public PullRequest() {
@@ -22,5 +23,13 @@ public class PullRequest {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public int getNumber() {
+        return number;
+    }
+
+    public void setNumber(int number) {
+        this.number = number;
     }
 }

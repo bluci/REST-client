@@ -17,8 +17,6 @@ public class MainApplication extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         primaryStage.setTitle("pull request client");
-        primaryStage.setWidth(1000);
-        primaryStage.setHeight(500);
         primaryStage.centerOnScreen();
 
         UIController uiController = new UIController(restClient, primaryStage);

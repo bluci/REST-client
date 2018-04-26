@@ -9,15 +9,16 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<AnchorPane prefHeight="400.0" prefWidth="772.0" xmlns="http://javafx.com/javafx/9" xmlns:fx="http://javafx.com/fxml/1"
+<AnchorPane prefHeight="510.0" prefWidth="861.0" xmlns="http://javafx.com/javafx/9" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="core.ui.UIController">
     <children>
-        <GridPane layoutX="-2.0" layoutY="100.0" prefHeight="289.0" prefWidth="772.0">
+        <GridPane layoutX="-2.0" layoutY="100.0" prefHeight="398.0" prefWidth="861.0">
             <children>
                 <TableView fx:id="pullRequestTableView" prefHeight="411.0" prefWidth="772.0" GridPane.hgrow="ALWAYS"
                            GridPane.vgrow="ALWAYS">
                     <columns>
-                        <TableColumn fx:id="pullRequestTitleCol" prefWidth="771.0" text="title"/>
+                        <TableColumn fx:id="pullRequestNrCol" prefWidth="88.0" text="number"/>
+                        <TableColumn fx:id="pullRequestTitleCol" prefWidth="772.0" text="title"/>
                     </columns>
                 </TableView>
             </children>
