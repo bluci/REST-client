@@ -32,7 +32,9 @@
         <Button fx:id="refreshBtn" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#onRefreshBtnClicked"
                 text="refresh"/>
         <TextField fx:id="filterStringInput" layoutX="14.0" layoutY="62.0" promptText="filter string"/>
-        <Button fx:id="applyFilterBtn" layoutX="206.0" layoutY="62.0" mnemonicParsing="false" text="apply filter"/>
-        <Button fx:id="removeFilterBtn" layoutX="326.0" layoutY="62.0" mnemonicParsing="false" text="remove filter"/>
+        <Button fx:id="applyFilterBtn" layoutX="206.0" layoutY="62.0" mnemonicParsing="false"
+                onAction="#onApplyFilterBtnClicked" text="apply filter"/>
+        <Button fx:id="removeFilterBtn" layoutX="326.0" layoutY="62.0" mnemonicParsing="false"
+                onAction="#onRemoveFilterBtnClicked" text="remove filter"/>
     </children>
 </AnchorPane>
