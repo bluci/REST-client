@@ -37,6 +37,7 @@ public class SimpleRestClient implements RestClient {
             result.addAll(tmp);
             tmp = getItemsOfPage(++pageNr);
         }
+        logger.debug("result size: " + result.size());
         return result;
     }
 
@@ -56,7 +57,6 @@ public class SimpleRestClient implements RestClient {
 
     private List<PullRequest> getPullRequestListFromResponse(final Response serverResponse) throws IOException {
         List<PullRequest> result;
-
         result = new ObjectMapper().readValue(serverResponse.readEntity(String.class),
                 new TypeReference<List<PullRequest>>() {
                 });

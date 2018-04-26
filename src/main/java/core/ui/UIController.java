@@ -12,7 +12,6 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.stage.Stage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -71,9 +70,9 @@ public class UIController {
 
     public void onApplyFilterBtnClicked(ActionEvent actionEvent) {
         String filterString = filterStringInput.getText();
-        if (filterString.isEmpty()) {
-            logger.error("missing filter string");
-            showWarningAltert("missing filter string");
+        if (!isValidFilterString(filterString) || filterString.isEmpty()) {
+            logger.error("invalid filter string");
+            showWarningAltert("invalid filter string");
             return;
         }
 
@@ -84,8 +83,24 @@ public class UIController {
         pullRequestTableView.refresh();
     }
 
+    private boolean isValidFilterString(String filterString) {
+        boolean result = true;
+        final String validRegex = "([A-Z]*[a-z]*)*";
+        if (filterString == null) {
+            return false;
+        }
+        if (filterString.isEmpty()) {
+            result = false;
+        }
+        if (!filterString.matches(validRegex)) {
+            result = false;
+        }
+        return result;
+    }
+
     public void onRemoveFilterBtnClicked(ActionEvent actionEvent) {
         setPullRequestTableData(allPullRequests);
+        filterStringInput.setText("");
         pullRequestTableView.refresh();
     }
 
