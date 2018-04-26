@@ -1,4 +1,8 @@
 # REST-client
-REST-client for the GitHub API v3 in java
+REST-client is a simple REST-consumer that uses the GitHub API v3 to show all open pull request of the project TypeScript of Microsoft.
 
-* build and run with maven: mvn compile and mvn exec:java
+## Building
+* clone a copy of the repository
+* build with maven:   mvn compile
+* execute with maven: mvn exec:java
+
