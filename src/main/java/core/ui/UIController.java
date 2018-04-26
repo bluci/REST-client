@@ -24,7 +24,6 @@ public class UIController {
     private final RestClient restClient;
     private ObservableList<PullRequest> pullRequestTableData;
     private List<PullRequest> allPullRequests;
-    private final String PATH_TO_PROJECT = "/Microsoft/TypeScript";
 
     @FXML
     public TableView<PullRequest> pullRequestTableView;
@@ -53,7 +52,7 @@ public class UIController {
 
     private void updateTable() {
         try {
-            allPullRequests = restClient.getAllOpenPullRequests(PATH_TO_PROJECT);
+            allPullRequests = restClient.getAllOpenPullRequests();
             setPullRequestTableData(allPullRequests);
         } catch (IOException | RestException e) {
             logger.error("error getting pull requests from restClient");

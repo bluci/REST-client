@@ -12,5 +12,5 @@ public interface RestClient {
      *
      * @return a list of open pull requests
      */
-    List<PullRequest> getAllOpenPullRequests(String projectPath) throws IOException, RestException;
+    List<PullRequest> getAllOpenPullRequests() throws IOException, RestException;
 }

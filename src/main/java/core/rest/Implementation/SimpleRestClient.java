@@ -5,9 +5,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import core.entities.PullRequest;
 import core.exception.RestException;
 import core.rest.RestClient;
+import core.util.ResourceConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
@@ -19,8 +19,6 @@ import java.util.List;
 
 public class SimpleRestClient implements RestClient {
     private final Logger logger = LoggerFactory.getLogger(SimpleRestClient.class);
-    private final String REST_URI = "https://api.github.com";
-    private final String PATH_TO_PULLS = "/repos/Microsoft/TypeScript/pulls";
     private final Client restClient;
 
     public SimpleRestClient() {
@@ -28,7 +26,7 @@ public class SimpleRestClient implements RestClient {
     }
 
     @Override
-    public List<PullRequest> getAllOpenPullRequests(final String projectPath) throws IOException, RestException {
+    public List<PullRequest> getAllOpenPullRequests() throws IOException, RestException {
         List<PullRequest> result = new ArrayList<>();
         int pageNr = 1;
 
@@ -44,8 +42,8 @@ public class SimpleRestClient implements RestClient {
     private List<PullRequest> getItemsOfPage(final int pageNr) throws RestException, IOException {
         List<PullRequest> result;
         Response serverResponse = restClient
-                .target(REST_URI)
-                .path(PATH_TO_PULLS).queryParam("per_page", 100).queryParam("page", pageNr)
+                .target(ResourceConstants.REST_URI)
+                .path(ResourceConstants.PATH_TO_PULLS).queryParam("per_page", 100).queryParam("page", pageNr)
                 .request(MediaType.APPLICATION_JSON)
                 .get();
         if (serverResponse.getStatus() != 200) {
