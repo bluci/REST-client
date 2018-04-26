@@ -61,7 +61,7 @@ public class UIController {
         }
     }
 
-    private void setPullRequestTableData(List<PullRequest> pullRequestList) {
+    private void setPullRequestTableData(final List<PullRequest> pullRequestList) {
         pullRequestTableData.clear();
         pullRequestTableData.addAll(pullRequestList);
         pullRequestTableView.setItems(pullRequestTableData);
@@ -82,7 +82,7 @@ public class UIController {
         pullRequestTableView.refresh();
     }
 
-    private boolean isValidFilterString(String filterString) {
+    private boolean isValidFilterString(final String filterString) {
         boolean result = true;
         final String validRegex = "([A-Z]*[a-z]*)*";
         if (filterString == null) {
@@ -103,7 +103,7 @@ public class UIController {
         pullRequestTableView.refresh();
     }
 
-    private void showWarningAltert(String msg) {
+    private void showWarningAltert(final String msg) {
         Alert alert = new Alert(Alert.AlertType.WARNING);
         alert.setHeaderText("warning");
         alert.setContentText(msg);

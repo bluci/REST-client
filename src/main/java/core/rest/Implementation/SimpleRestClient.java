@@ -49,7 +49,7 @@ public class SimpleRestClient implements RestClient {
                 .request(MediaType.APPLICATION_JSON)
                 .get();
         if (serverResponse.getStatus() != HTTP_OK) {
-            throw new RestException("recieved error response: " + serverResponse.getEntity().toString());
+            throw new RestException("received error response: " + serverResponse.getEntity().toString());
         }
         result = getPullRequestListFromResponse(serverResponse);
         return result;
