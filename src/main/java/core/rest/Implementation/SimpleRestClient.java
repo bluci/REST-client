@@ -45,7 +45,9 @@ public class SimpleRestClient implements RestClient {
         List<PullRequest> result;
         Response serverResponse = restClient
                 .target(ResourceConstants.REST_URI)
-                .path(ResourceConstants.PATH_TO_PULLS).queryParam("per_page", 100).queryParam("page", pageNr)
+                .path(ResourceConstants.PATH_TO_PULLS)
+                .queryParam("per_page", 100)
+                .queryParam("page", pageNr)
                 .request(MediaType.APPLICATION_JSON)
                 .get();
         if (serverResponse.getStatus() != HTTP_OK) {
