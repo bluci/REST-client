@@ -9,8 +9,8 @@ import core.util.ResourceConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.io.IOException;
@@ -21,10 +21,13 @@ import static java.net.HttpURLConnection.HTTP_OK;
 
 public class SimpleRestClient implements RestClient {
     private final Logger logger = LoggerFactory.getLogger(SimpleRestClient.class);
-    private final Client restClient;
+    private final WebTarget webTarget;
 
     public SimpleRestClient() {
-        this.restClient = ClientBuilder.newClient();
+        this.webTarget = ClientBuilder.newClient()
+                .target(ResourceConstants.REST_URI)
+                .path(ResourceConstants.PATH_TO_PULLS)
+                .queryParam("per_page", 100);
     }
 
     @Override
@@ -43,10 +46,7 @@ public class SimpleRestClient implements RestClient {
 
     private List<PullRequest> getItemsOfPage(final int pageNr) throws RestException, IOException {
         List<PullRequest> result;
-        Response serverResponse = restClient
-                .target(ResourceConstants.REST_URI)
-                .path(ResourceConstants.PATH_TO_PULLS)
-                .queryParam("per_page", 100)
+        Response serverResponse = webTarget
                 .queryParam("page", pageNr)
                 .request(MediaType.APPLICATION_JSON)
                 .get();
