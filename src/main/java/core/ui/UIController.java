@@ -1,6 +1,7 @@
 package core.ui;
 
 import core.entities.PullRequest;
+import core.exception.RestException;
 import core.rest.RestClient;
 import javafx.beans.Observable;
 import javafx.collections.FXCollections;
@@ -54,6 +55,8 @@ public class UIController {
             pullRequestTableView.refresh();
         } catch (IOException e) {
             logger.error("error getting pull requests from restClient");
+            e.printStackTrace();
+        } catch (RestException e) {
             e.printStackTrace();
         }
     }
