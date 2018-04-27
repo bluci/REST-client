@@ -19,7 +19,7 @@ public class MainApplication extends Application {
         primaryStage.setTitle("pull request client");
         primaryStage.centerOnScreen();
 
-        UIController uiController = new UIController(restClient);
+        UIController uiController = new UIController(restClient, primaryStage);
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/pullRequestViewer.fxml"));
         fxmlLoader.setControllerFactory(param -> param.isInstance(uiController) ? uiController : null);
         primaryStage.setScene(new Scene(fxmlLoader.load()));
