@@ -50,6 +50,7 @@ public class SimpleRestClient implements RestClient {
                 .queryParam("page", pageNr)
                 .request(MediaType.APPLICATION_JSON)
                 .get();
+        logger.debug(pageNr + "response received");
         if (serverResponse.getStatus() != HTTP_OK) {
             throw new RestException("received error response: " + serverResponse.getEntity().toString());
         }
@@ -59,7 +60,7 @@ public class SimpleRestClient implements RestClient {
 
     private List<PullRequest> getPullRequestListFromResponse(final Response serverResponse) throws IOException {
         List<PullRequest> result;
-        result = new ObjectMapper().readValue(serverResponse.readEntity(String.class),
+        result = new ObjectMapper().readValue(serverResponse.readEntity(byte[].class),
                 new TypeReference<List<PullRequest>>() {
                 });
         return result;

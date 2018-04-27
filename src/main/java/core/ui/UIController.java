@@ -45,6 +45,7 @@ public class UIController {
         pullRequestTableData = FXCollections.observableArrayList();
     }
 
+    @FXML
     public void onRefreshBtnClicked(ActionEvent actionEvent) {
         updateTable();
         pullRequestTableView.refresh();
@@ -67,6 +68,7 @@ public class UIController {
         pullRequestTableView.setItems(pullRequestTableData);
     }
 
+    @FXML
     public void onApplyFilterBtnClicked(ActionEvent actionEvent) {
         String filterString = filterStringInput.getText();
         if (!isValidFilterString(filterString) || filterString.isEmpty()) {
@@ -97,6 +99,7 @@ public class UIController {
         return result;
     }
 
+    @FXML
     public void onRemoveFilterBtnClicked(ActionEvent actionEvent) {
         setPullRequestTableData(allPullRequests);
         filterStringInput.setText("");
