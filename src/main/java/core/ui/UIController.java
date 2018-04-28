@@ -12,6 +12,8 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,6 +24,7 @@ import java.util.stream.Collectors;
 public class UIController {
     private final Logger logger = LoggerFactory.getLogger(UIController.class);
     private final RestClient restClient;
+    private final Stage primaryStage;
     private ObservableList<PullRequest> pullRequestTableData;
     private List<PullRequest> allPullRequests;
 
@@ -35,14 +38,17 @@ public class UIController {
     public TextField filterStringInput;
 
 
-    public UIController(final RestClient restClient) {
+    public UIController(final RestClient restClient, final Stage primaryStage) {
         this.restClient = restClient;
+        this.primaryStage = primaryStage;
     }
 
     public void initialize() {
         pullRequestNrCol.setCellValueFactory(new PropertyValueFactory<>("number"));
         pullRequestTitleCol.setCellValueFactory(new PropertyValueFactory<>("title"));
         pullRequestTableData = FXCollections.observableArrayList();
+        primaryStage.addEventHandler(WindowEvent.WINDOW_SHOWING, (e) ->
+                new Thread(this::updateTable).start());
     }
 
     @FXML
