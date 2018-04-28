@@ -44,6 +44,25 @@ public class SimpleRestClient implements RestClient {
         return getPullRequestsFromFutures(futureResponses);
     }
 
+    private int getNrOfPages() throws RestException {
+        String linkString = webTarget.request(MediaType.APPLICATION_JSON).get().getHeaderString("Link");
+        if (linkString == null) {
+            throw new RestException("error getting number of pages");
+        }
+        int idxOfLast = linkString.indexOf("last");
+        return Integer.parseInt(linkString.substring(idxOfLast - 9, idxOfLast - 8));
+    }
+
+    private Future<Response> getItemsOfPage(final int pageNr) {
+        Future<Response> serverResponse = webTarget
+                .queryParam("page", pageNr)
+                .request(MediaType.APPLICATION_JSON)
+                .async()
+                .get();
+        logger.debug(pageNr + "response received");
+        return serverResponse;
+    }
+
     private List<PullRequest> getPullRequestsFromFutures(List<Future<Response>> futures)
             throws IOException, RestException {
         List<PullRequest> result = new ArrayList<>();
@@ -61,24 +80,6 @@ public class SimpleRestClient implements RestClient {
             }
         }
         return result;
-    }
-
-    private int getNrOfPages() throws RestException {
-        String linkString = webTarget.request(MediaType.APPLICATION_JSON).get().getHeaderString("Link");
-        if (linkString == null) {
-            throw new RestException("error getting number of pages");
-        }
-        return Integer.parseInt(linkString.substring(linkString.indexOf("last") - 9, linkString.indexOf("last") - 8));
-    }
-
-    private Future<Response> getItemsOfPage(final int pageNr) {
-        Future<Response> serverResponse = webTarget
-                .queryParam("page", pageNr)
-                .request(MediaType.APPLICATION_JSON)
-                .async()
-                .get();
-        logger.debug(pageNr + "response received");
-        return serverResponse;
     }
 
     private List<PullRequest> getPullRequestListFromResponse(final Response serverResponse) throws IOException {
