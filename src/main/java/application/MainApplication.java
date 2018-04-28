@@ -18,6 +18,7 @@ public class MainApplication extends Application {
     public void start(Stage primaryStage) throws Exception {
         primaryStage.setTitle("pull request client");
         primaryStage.centerOnScreen();
+        primaryStage.setOnCloseRequest((e) -> System.exit(0));
 
         UIController uiController = new UIController(restClient, primaryStage);
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/pullRequestViewer.fxml"));
