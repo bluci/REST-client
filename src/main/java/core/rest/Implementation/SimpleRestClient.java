@@ -16,45 +16,70 @@ import javax.ws.rs.core.Response;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 
 import static java.net.HttpURLConnection.HTTP_OK;
 
 public class SimpleRestClient implements RestClient {
     private final Logger logger = LoggerFactory.getLogger(SimpleRestClient.class);
-    private final WebTarget webTarget;
+    private WebTarget webTarget;
 
     public SimpleRestClient() {
         this.webTarget = ClientBuilder.newClient()
                 .target(ResourceConstants.REST_URI)
                 .path(ResourceConstants.PATH_TO_PULLS)
-                .queryParam("per_page", 100);
+                .queryParam("per_page", 30)
+                .queryParam("status", "open");
     }
 
     @Override
     public List<PullRequest> getAllOpenPullRequests() throws IOException, RestException {
-        List<PullRequest> result = new ArrayList<>();
-        int pageNr = 1;
+        int currentPageNr = 1;
+        List<Future<Response>> futureResponses = new ArrayList<>();
+        final int nrOfPages = getNrOfPages();
 
-        List<PullRequest> tmp = getItemsOfPage(pageNr);
-        while (tmp.size() > 0) {
-            result.addAll(tmp);
-            tmp = getItemsOfPage(++pageNr);
+        while (currentPageNr <= nrOfPages) {
+            futureResponses.add(getItemsOfPage(currentPageNr++));
         }
-        logger.debug("result size: " + result.size());
-        return result;
+        return getPullRequestsFromFutures(futureResponses);
     }
 
-    private List<PullRequest> getItemsOfPage(final int pageNr) throws RestException, IOException {
-        List<PullRequest> result;
-        Response serverResponse = webTarget
+    private int getNrOfPages() throws RestException {
+        String linkString = webTarget.request(MediaType.APPLICATION_JSON).get().getHeaderString("Link");
+        if (linkString == null) {
+            throw new RestException("error getting number of pages");
+        }
+        int idxOfLast = linkString.indexOf("last");
+        return Integer.parseInt(linkString.substring(idxOfLast - 9, idxOfLast - 8));
+    }
+
+    private Future<Response> getItemsOfPage(final int pageNr) {
+        Future<Response> serverResponse = webTarget
                 .queryParam("page", pageNr)
                 .request(MediaType.APPLICATION_JSON)
+                .async()
                 .get();
         logger.debug(pageNr + "response received");
-        if (serverResponse.getStatus() != HTTP_OK) {
-            throw new RestException("received error response: " + serverResponse.getEntity().toString());
+        return serverResponse;
+    }
+
+    private List<PullRequest> getPullRequestsFromFutures(List<Future<Response>> futures)
+            throws IOException, RestException {
+        List<PullRequest> result = new ArrayList<>();
+        Response tmp;
+        for (Future<Response> r : futures) {
+            try {
+                tmp = r.get();
+                if (tmp.getStatus() != HTTP_OK) {
+                    throw new RestException("received HTTP error: " + tmp.getStatusInfo());
+                }
+                logger.debug("constructing entities from response");
+                result.addAll(getPullRequestListFromResponse(tmp));
+            } catch (InterruptedException | ExecutionException e) {
+                throw new RestException("error constructing response entities", e);
+            }
         }
-        result = getPullRequestListFromResponse(serverResponse);
         return result;
     }
 

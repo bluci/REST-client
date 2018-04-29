@@ -18,6 +18,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,7 +27,7 @@ public class UIController {
     private final RestClient restClient;
     private final Stage primaryStage;
     private ObservableList<PullRequest> pullRequestTableData;
-    private List<PullRequest> allPullRequests;
+    private List<PullRequest> allPullRequests = new ArrayList<>();
 
     @FXML
     public TableView<PullRequest> pullRequestTableView;
@@ -47,8 +48,9 @@ public class UIController {
         pullRequestNrCol.setCellValueFactory(new PropertyValueFactory<>("number"));
         pullRequestTitleCol.setCellValueFactory(new PropertyValueFactory<>("title"));
         pullRequestTableData = FXCollections.observableArrayList();
-        primaryStage.addEventHandler(WindowEvent.WINDOW_SHOWING, (e) ->
-                new Thread(this::updateTable).start());
+        this.primaryStage.addEventHandler(WindowEvent.WINDOW_SHOWING, (event -> {
+            new Thread(this::updateTable).start();
+        }));
     }
 
     @FXML
@@ -59,12 +61,13 @@ public class UIController {
 
     private void updateTable() {
         try {
-            allPullRequests = restClient.getAllOpenPullRequests();
+            allPullRequests.addAll(restClient.getAllOpenPullRequests());
+            logger.debug("number of pullRequests:" + allPullRequests.size());
             setPullRequestTableData(allPullRequests);
         } catch (IOException | RestException e) {
             logger.error("error getting pull requests from restClient");
             e.printStackTrace();
-            showWarningAltert("\n" + e.getMessage());
+            showWarningAlert("\n" + e.getMessage());
         }
     }
 
@@ -77,9 +80,8 @@ public class UIController {
     @FXML
     public void onApplyFilterBtnClicked(ActionEvent actionEvent) {
         String filterString = filterStringInput.getText();
-        if (!isValidFilterString(filterString) || filterString.isEmpty()) {
-            logger.error("invalid filter string");
-            showWarningAltert("invalid filter string");
+        if (!isValidFilterString(filterString)) {
+            showWarningAlert("invalid filter string");
             return;
         }
 
@@ -112,7 +114,7 @@ public class UIController {
         pullRequestTableView.refresh();
     }
 
-    private void showWarningAltert(final String msg) {
+    private void showWarningAlert(final String msg) {
         Alert alert = new Alert(Alert.AlertType.WARNING);
         alert.setHeaderText("warning");
         alert.setContentText(msg);
