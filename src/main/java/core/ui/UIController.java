@@ -62,6 +62,7 @@ public class UIController {
     private void updateTable() {
         try {
             allPullRequests.addAll(restClient.getAllOpenPullRequests());
+            logger.debug("number of pullRequests:" + allPullRequests.size());
             setPullRequestTableData(allPullRequests);
         } catch (IOException | RestException e) {
             logger.error("error getting pull requests from restClient");
