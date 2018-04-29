@@ -29,7 +29,8 @@ public class SimpleRestClient implements RestClient {
         this.webTarget = ClientBuilder.newClient()
                 .target(ResourceConstants.REST_URI)
                 .path(ResourceConstants.PATH_TO_PULLS)
-                .queryParam("per_page", 30);
+                .queryParam("per_page", 30)
+                .queryParam("status", "open");
     }
 
     @Override
