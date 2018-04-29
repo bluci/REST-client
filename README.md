@@ -4,6 +4,7 @@ REST-client is a simple javafx REST consumer application that uses the GitHub AP
 
 ## Building
 * clone a copy of the repository
-* build with maven:   mvn compile
+* (open as maven project)
+* build with maven:   mvn clean compile
 * execute with maven: mvn exec:java
 
