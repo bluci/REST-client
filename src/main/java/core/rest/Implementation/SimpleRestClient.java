@@ -52,7 +52,7 @@ public class SimpleRestClient implements RestClient {
     }
 
     /**
-     * Gets the number of pages the (paginated) GitHub-resource is separated in from the link element
+     * Gets the number of pages the (paginated) GitHub-resource is separated in, from the link element
      * of the HTTP-response header
      * @return the number of pages as integer
      */
