@@ -58,7 +58,7 @@ public class SimpleRestClient implements RestClient {
      */
     private int getNrOfPages() throws RestException {
         String linkString = webTarget.request(MediaType.APPLICATION_JSON).get().getHeaderString("Link");
-        if (linkString == null) {
+        if (linkString == null || linkString.isEmpty()) {
             throw new RestException("error getting number of pages");
         }
         linkString = linkString.substring(linkString.lastIndexOf(">") - 1);
@@ -108,7 +108,6 @@ public class SimpleRestClient implements RestClient {
     /**
      * Maps the content of the given response to PullRequest objects and
      * returns them as List, or an empty List if no PullRequest could be mapped.
-     * if the response was empty
      * @param serverResponse the response containing the received JSON data
      * @return list of the resulting pull requests
      */
